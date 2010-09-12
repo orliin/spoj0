@@ -1,2 +1,2 @@
-set :application, "arena.maycamp.com"
+set :application, "judge.openfmi.net"
 set :branch, "master"

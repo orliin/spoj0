@@ -13,12 +13,14 @@ development:
 test: &TEST
   adapter: mysql
   database: spoj0_test
+  encoding: utf8
   username: root
   password:
 
 production:
   adapter: mysql
   database: spoj0_prod
+  encoding: utf8
   username: root
   password:
 

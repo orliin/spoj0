@@ -40,7 +40,7 @@ if ARGV.length < 1
 end
 
 cmd = ARGV.shift
-
+#puts "ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
 pid = fork do
   # Process.setrlimit(Process::RLIMIT_CPU, timelimit, timelimit) if timelimit
   Process.setrlimit(Process::RLIMIT_NPROC, proclimit, proclimit) if proclimit
@@ -70,7 +70,9 @@ loop {
     exit 127
   end
   
-  if timelimit and (RProcFS.state(pid) == "S" or used_time > timelimit)
+  #if timelimit and (RProcFS.state(pid) == "S" or used_time > timelimit)
+  if timelimit and used_time > timelimit
+    puts "time is tickin awaaaaaay", RProcFS.state(pid), used_time, timelimit
     Process.kill "KILL", pid
     Process.waitall
     print_stats(used_memory, used_time)
@@ -80,6 +82,7 @@ loop {
   status = Process.wait(pid, Process::WNOHANG)
   if status
     print_stats(used_memory, used_time)
+    #puts "opaaaaaaa", $?.exitstatus, $?.termsig, $?.stopsig
     exit($?.exitstatus || $?.termsig || $?.stopsig)
   end
   

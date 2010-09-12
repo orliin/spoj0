@@ -1,4 +1,5 @@
 require File.join(File.dirname(__FILE__), "shell_utils")
+require File.join(File.dirname(__FILE__), "grader/compiler")
 
 class Grader
   include ShellUtils
@@ -78,18 +79,43 @@ class Grader
     end
     
     def compile(run)
-      File.open("program.cpp", "w") do |f|
+      puts "Compiling..."
+      puts Grader::LANG_TO_COMPILER
+      puts run.language
+      
+      case run.language
+        when Run::LANG_C_CPP 
+          File.open("program.cpp", "w") do |f|
         f.write(run.source_code)
       end
       
-      puts "Compiling..."
-      verbose_system "g++ program.cpp -o program -O2 -s -static -lm -x c++"
+      
+          comp = Compiler::Cpp.new
+          comp.compile("program.cpp", "program")
+        when Run::LANG_JAVA
+          File.open("program.java", "w") do |f|
+        f.write(run.source_code)
+      end
+      
+      
+          comp = Compiler::Java.new
+          comp.compile("program.java", "program")
+      end
+      #verbose_system "g++ program.cpp -o program -O2 -s -lm -x c++"
     end
     
     def run_tests(run, tests)
       # for each test, run the program
       run.problem.input_files[0...tests].zip(run.problem.output_files).map { |input_file, answer_file|
-        verbose_system "#{@runner} --user #{@user} --time #{run.problem.time_limit.to_f} --mem #{run.problem.memory_limit} --procs 1 -- ./program < #{input_file} > output"
+        
+        case run.language
+          when Run::LANG_C_CPP
+            verbose_system "#{@runner} --user #{@user} --time #{run.problem.time_limit.to_f} --mem #{run.problem.memory_limit} --procs 1 -- ./program < #{input_file} > output"
+          when Run::LANG_JAVA # 
+            #verbose_system "#{@runner} --user #{@user} --time #{run.problem.time_limit.to_f*5} --mem #{run.problem.memory_limit+758644736}--procs 1 -- 'java program' < #{input_file} > output"
+            verbose_system "#{@runner} --user #{@user} --time #{run.problem.time_limit.to_f} -- 'java program' < #{input_file} > output"
+            #puts "ohaaaaaaaa"
+        end
         
         case $?.exitstatus
           when 9

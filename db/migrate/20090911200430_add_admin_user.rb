@@ -7,7 +7,7 @@ class AddAdminUser < ActiveRecord::Migration
     u.unencrypted_password = "123123"
     u.unencrypted_password_confirmation = "123123"
     u.admin = true
-    u.save!
+    u.save(false)
   end
 
   def self.down

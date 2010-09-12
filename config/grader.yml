@@ -8,8 +8,8 @@ valo:
   root: /tmp
   user: valentinmihov
   rsync: mcvalo@maycamp.com:/home/maycamp/arena.maycamp.com/git/sets
-grader:
-  host: http://localhost:3000
-  root: /home/spoj0run
-  user: spoj0run
-  rsync: valo@localhost:/home/valo/spoj0/sets
+ubuntu:
+  host: http://localhost
+  root: /home/orliin/workspace/
+  user: orliin
+  rsync: orliin@localhost:/home/orliin/spoj0/sets

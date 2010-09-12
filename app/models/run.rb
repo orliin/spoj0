@@ -4,8 +4,9 @@ class Run < ActiveRecord::Base
   module Constants
     LANG_C_CPP = "C/C++"
     LANG_PAS = "Pascal"
+    LANG_JAVA = "Java"
     
-    LANGUAGES = [LANG_C_CPP]
+    LANGUAGES = [LANG_C_CPP, LANG_JAVA]
     WAITING = "waiting"
     JUDGING = "judging"
     CHECKING = "checking"
